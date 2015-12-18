@@ -9,10 +9,10 @@
         },
         {
             "type": "drawer-view",
-            "name": "console",
+            "name": "mypanel",
             "title": "Console2",
             "order": "0",
-            "className": "WebInspector.ConsolePanel.WrapperView"
+            "className": "WebInspector.testPanel.WrapperView"
         },
         {
             "type": "@WebInspector.Revealer",
@@ -62,9 +62,7 @@
         "components"
     ],
     "scripts": [
-        "ConsoleViewMessage.js",
-        "ConsoleView.js",
-        "ConsolePanel.js"
+        "testPanel.js"
     ],
     "stylesheets": [
         "consoleView.css"

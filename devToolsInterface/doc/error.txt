@@ -1,0 +1,17 @@
+
+1. 添加新的panel后，在创建对象的时候失败了。
+	因为没有正确的导出到 WebInspector对象，被重新定义的WebInspector接收了
+2. 点开新的panel报错
+	TypeError: Cannot read property 'id' of undefined
+		at Object.WebInspector.TabbedPane.changeTabView (TabbedPane.js:409)
+		at Object.WebInspector.InspectorView.setCurrentPanel (InspectorView.js:303)
+		at Object.setCurrentPanelIfNecessary (InspectorView.js:237)
+		
+		因为module.json中的drawer部分的id写错了，
+		
+		修改后还有错
+		因为构造panel的时候，需要指定一个名字，这个名字必须与json中的一致。
+		super('mypanel');
+		
+		
+		
