@@ -5,12 +5,14 @@
 
 declare function loadResourcePromise(url:string):Promise<string>;
 
+/*
+	格式化路径，去掉.,..等
+*/
 declare function normalizePath(path:string):string;
 
 declare function loadScriptsPromise(scriptNames:string);//:Promise<undefined>;
 
 interface Runtime{
-	new (dscriptors:ModuleDescriptor,coreModuleName:Array<string>):Runtime;
 	_descriptor:ModuleDescriptor;
 	
 	/*
@@ -22,6 +24,27 @@ interface Runtime{
 		加载descriptors中指定的所有的脚本
 	*/
 	_loadScripts();
+	
+	/*
+		实际执行的时候，是module来执行
+	*/
+	_loadStylesheets():Promise<void>;
+
+	/*
+		调用全局的 normalizePath
+	*/
+	_modularizeURL(resourceName:string);
+	/*
+		加载type=autostart的module，这些module是核心模块
+	*/
+	_loadAutoStartModules(moduleNames:Array<string>):Promise<Array<any>>;		
+}
+
+declare var Runtime:{
+	new (dscriptors:ModuleDescriptor,coreModuleName:Array<string>):Runtime;
+	//静态函数
+	//
+	startApplication:(appName:string)=>void;
 }
 
 interface ModuleDescriptor{

@@ -8,6 +8,9 @@ declare module WebInspector{
 		//当前
 		_currentPanel:Panel;
 		
+		_drawerSplitView:SplitView;
+		_drawer:Drawer;
+		
 		/*
 			像菜单的那个界面，几大部分：Elements,console,Network...
 		*/
