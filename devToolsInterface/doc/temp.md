@@ -25,6 +25,7 @@ appName+'.json'定义了application需要的所有的模块。
 
 ##调试消息怎么知道分配给那个module
 
+
 ##Drawer是什么
 在 _createAppUI 的时候，会创建Drawer
 ```javascript

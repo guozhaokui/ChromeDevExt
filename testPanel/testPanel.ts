@@ -22,7 +22,7 @@ module WebInspector{
 	}
 	
 	class _WrapperView {
-		constructor(b:boolean){};
+		constructor(b:boolean){}
 		
 	}
 }

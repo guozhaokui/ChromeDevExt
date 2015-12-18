@@ -1,6 +1,5 @@
 
 declare module WebInspector{
-
 	/*
 		path:
 			main
