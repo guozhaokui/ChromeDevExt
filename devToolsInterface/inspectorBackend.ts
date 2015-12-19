@@ -229,6 +229,7 @@ class InspectorBackendClass{
 	static Connection:BackEnd_Connection;
 	
 	static DispatcherPrototype=class {
+        _dispatcher:any;
 		//connection调过来的。
 		//@param functionName 是从消息中取出的函数名
 		//@param messageObject 是原始的消息。 
@@ -282,4 +283,18 @@ class BackEnd_Connection{
         isClosed():boolean{
             return false;
         }	    
+}
+
+class BackEnd_WebSocketConnection extends BackEnd_Connection{
+    constructor(url:string, onConnectionReady){
+        super();
+    }
+    
+    /**
+     * 收到了网络消息了，发送出去。
+     */
+    _onMessage(message:MessageEvent){
+        var data = message.data;
+        this.dispatch(data);
+    }
 }

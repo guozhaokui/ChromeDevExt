@@ -93,7 +93,7 @@ module WebInspector{
 
 	}
 	
-	class  VBox extends View{
+	export class  VBox extends View{
 		constructor (isWebComponent:boolean){
             super(isWebComponent);
             this.element.classList.add('vbox');
@@ -206,65 +206,6 @@ module WebInspector{
 		_view:View;
 		_shown:boolean;			
 	}	
-	
-	//////////////////////////////////////////////////////////////////////	
-	//file:consolePanel.js
-	/*
-		ConsolePanel对应的是Console面板。
-	*/
-	interface ConsolePanel_Instance {
-		/*
-			返回一个view.第一次的时候会创建一个。
-		*/
-		_view():ConsoleView;
-		
-		defaultFocusedElement():HTMLElement;
-		
-		wasShown():boolean;
-		
-		willHide();
-	}
-	
-	interface ConsolePanel_static extends Panel{
-		new():ConsolePanel_Instance;
-		show():void;	//WebInspector.inspectorView.setCurrentPanel(WebInspector.ConsolePanel._instance());
-	}
-	
-	var ConsolePanel:ConsolePanel_static;
-	
-// 	interface ConsolePanel extends Panel{
-// 		new():ConsolePanel;
-// 		
-// 		/*
-// 			返回一个view.第一次的时候会创建一个。
-// 		*/
-// 		_view():ConsoleView;
-// 		
-// 		defaultFocusedElement():HTMLElement;
-// 		
-// 		wasShown():boolean;
-// 		
-// 		willHide();
-// 		
-// 	}
-// 
-// 	module ConsolePanel{
-// 		/*
-// 			下面的是ConsolePanel中的静态的类。
-// 			由于interface不能 static xx=interface{},
-// 			只好用这种方法定义了。
-// 		*/
-// 		interface WrapperView extends VBox{
-// 			wasShown():boolean;
-// 		}
-// 		var WrapperView:{
-// 			new ():WrapperView;
-// 		}
-// 	}
-	
-	interface ConsoleView{
-	}	
-	
 }
 
 /*

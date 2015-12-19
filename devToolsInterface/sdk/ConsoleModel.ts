@@ -34,6 +34,9 @@ module WebInspector{
             return null;
         }
         
+        /**
+         * 从ConsoleDispatcher 调过来的
+         */
         addMessage(msg:ConsoleMessage):void{
             //if (WebInspector.NetworkManager.hasDevToolsRequestHeader(msg.request))
             //    return;

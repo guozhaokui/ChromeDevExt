@@ -30,6 +30,13 @@ v8自带的消息被分配给
 
 ##从应用来的消息都能被发送给客户端么，需要什么特殊处理么
 
+##什么时候添加事件监听的
+都是在  _loadedWithCapabilities 的时候么  
+```javascript
+    WebInspector.ResourceTreeModel = function(target)
+        ...
+        target.consoleModel.addEventListener(WebInspector.ConsoleModel.Events.MessageAdded, this._consoleMessageAdded, this);
+```
 ##Drawer是什么
 在 _createAppUI 的时候，会创建Drawer
 ```javascript
