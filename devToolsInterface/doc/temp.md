@@ -26,6 +26,7 @@ appName+'.json'定义了application需要的所有的模块。
 ##调试消息怎么知道分配给那个module
 有一个protocol.json，定义domain和module的对应关系
 v8自带的消息被分配给
+使用的是 node-inspector\tools 目录下面的protocol.json。 可能是路径被服务器重定向了吧。
 
 ##从应用来的消息都能被发送给客户端么，需要什么特殊处理么
 
@@ -42,11 +43,14 @@ WebInspector.inspectorView = new WebInspector.InspectorView();
 2. module与框架之间通过事件进行交互
 3. 网络模块收到消息后，直接根据domain发给特定的module
 4. NI服务器可能需要管理数据。
+. model负责dispatch事件么
 
 ##概念
 1. panel
 2. sidebar panes
 3. extensions
+4. Capabilities
+5. model
 
 ##写一个自己的module
 1. 添加到application的配置中，

@@ -1,25 +1,6 @@
 
 module WebInspector{
 	/*
-		path:
-			main
-		file:main.js
-	*/
-	interface Main{
-		showConsole();
-		
-		/*
-			onWindowLoad之后调用
-		*/
-		_loaded();
-		
-		/*
-			创建所有的uI。
-		*/
-		_createAppUI();
-	}
-	
-	/*
 		目录：
 			front-end/common
 		file:
@@ -61,12 +42,13 @@ module WebInspector{
 		
 	}
 	
-	class Object implements EventTarget{
+	export class Object implements EventTarget{
         addEventListener(eventType:string, listener:(e:Event)=>void, thisObject:Object){
         }		
 		removeEventListener(eventType:string, listener:(e:Event)=>void, thisObject:any):void{}
 		removeAllListeners(){}
 		hasEventListeners(eventType:string){}
+        
 		dispatchEventToListeners(eventType:string, eventData:any):boolean{
             return false;
         }
