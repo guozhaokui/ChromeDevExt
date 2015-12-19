@@ -111,7 +111,7 @@ module WebInspector{
 	//////////////////////////////////////////////////////////////////////
 	//path:
 	//file: Panel.js
-	class Panel extends VBox{
+	export class Panel extends VBox{
         constructor(name:string){
             super(false);
         }
@@ -120,7 +120,7 @@ module WebInspector{
         }
 	}
 	
-	interface PanelFactory{
+	export interface PanelFactory{
 		createPanel():Panel;
 	}	
 	
