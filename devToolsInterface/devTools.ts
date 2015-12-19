@@ -1,5 +1,5 @@
 
-declare module WebInspector{
+module WebInspector{
 	/*
 		path:
 			main
@@ -35,7 +35,7 @@ declare module WebInspector{
 		* @param {function(!WebInspector.Event)} listener
 		* @param {!Object=} thisObject
 		*/
-		addEventListener(eventType:string, listener:(e:Event)=>void, thisObject:any):void;
+		addEventListener(eventType:string, listener:(e:Event)=>void, thisObject:Object):void;
 	
 		/**
 		* @param {string} eventType
@@ -61,8 +61,15 @@ declare module WebInspector{
 		
 	}
 	
-	interface Object extends EventTarget{
-		
+	class Object implements EventTarget{
+        addEventListener(eventType:string, listener:(e:Event)=>void, thisObject:Object){
+        }		
+		removeEventListener(eventType:string, listener:(e:Event)=>void, thisObject:any):void{}
+		removeAllListeners(){}
+		hasEventListeners(eventType:string){}
+		dispatchEventToListeners(eventType:string, eventData:any):boolean{
+            return false;
+        }
 	}
 	
 	//////////////////////////////////////////////////////////////////////
@@ -75,8 +82,10 @@ declare module WebInspector{
 		
 	}
 	
-	interface View extends Object{
-		new (isWebComponent:boolean):View;
+	class View extends Object{
+		constructor (isWebComponent:boolean){
+            super();
+        }
 		element:HTMLElement;
 		/* 
 			如果是 isWebComponent ，这个是element的子。否则那他们是一个对象。
@@ -95,16 +104,21 @@ declare module WebInspector{
 		//如果没有设置的话，就没有，使用element
 		_defaultFocusedElement:HTMLElement;
 		
-		defaultFocusedElement():HTMLElement;
-		setDefaultFocusedElement(e:HTMLElement):void;
+		defaultFocusedElement():HTMLElement{return null;}
+		setDefaultFocusedElement(e:HTMLElement):void{}
 		
-		calculateConstraints():Constraints;
+		calculateConstraints():Constraints{return null;}
 
 	}
 	
-	interface  VBox extends View{
-		new (isWebComponent:boolean):VBox;	//element.classList.add('vbox')
-		calculateConstraints():Constraints;
+	class  VBox extends View{
+		constructor (isWebComponent:boolean){
+            super(isWebComponent);
+            this.element.classList.add('vbox');
+        }	
+		calculateConstraints():Constraints{
+            return null;
+        }
 	}
 	
 	interface HBox extends View{
@@ -115,12 +129,13 @@ declare module WebInspector{
 	//////////////////////////////////////////////////////////////////////
 	//path:
 	//file: Panel.js
-	interface Panel extends VBox{
-		wasShown():boolean;
-	}
-	
-	var Panel:{
-		new(name:string):Panel;
+	class Panel extends VBox{
+        constructor(name:string){
+            super(false);
+        }
+		wasShown():boolean{
+            return false;
+        }
 	}
 	
 	interface PanelFactory{
@@ -296,39 +311,46 @@ declare function normalizePath(path:string):string;
 
 declare function loadScriptsPromise(scriptNames:string);//:Promise<undefined>;
 
-interface Runtime{
+class Runtime{
 	_descriptor:ModuleDescriptor;
 	
+    constructor(dscriptors:ModuleDescriptor,coreModuleName:Array<string>){
+        
+    }
 	/*
 		某个脚本加载完了，立刻执行他。
 	*/
-	scriptSourceLoaded(scriptNumber:number, scriptSource:string);
+	scriptSourceLoaded(scriptNumber:number, scriptSource:string):void{
+        
+    }
 	
 	/*
 		加载descriptors中指定的所有的脚本
 	*/
-	_loadScripts();
+	_loadScripts(){}
 	
 	/*
 		实际执行的时候，是module来执行
 	*/
-	_loadStylesheets():Promise<void>;
+	_loadStylesheets():Promise<void>{
+        return null;
+    }
 
 	/*
 		调用全局的 normalizePath
 	*/
-	_modularizeURL(resourceName:string);
+	_modularizeURL(resourceName:string){
+        
+    }
 	/*
 		加载type=autostart的module，这些module是核心模块
 	*/
-	_loadAutoStartModules(moduleNames:Array<string>):Promise<Array<any>>;		
-}
+	_loadAutoStartModules(moduleNames:Array<string>):Promise<Array<any>>{
+        return null;
+    }		
+    
+    static 	startApplication:(appName:string)=>void;
 
-declare var Runtime:{
-	new (dscriptors:ModuleDescriptor,coreModuleName:Array<string>):Runtime;
-	//静态函数
-	//
-	startApplication:(appName:string)=>void;
 }
 
 interface ModuleDescriptor{

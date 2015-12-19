@@ -1,4 +1,4 @@
-///<reference path="../devToolsInterface/devTools.d.ts" />
+///<reference path="../devToolsInterface/devTools.ts" />
 module WebInspector{
 'use strict';
 	export class testPanel extends Panel{
