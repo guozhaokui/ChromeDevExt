@@ -47,6 +47,18 @@ module WebInspector{
 
             this.dispatchEventToListeners(WebInspector.ConsoleModel.Events.MessageAdded, msg);            
         }
+        
+        requestClearMessages(){
+            this._consoleAgent.clearMessages();
+            this._messagesCleared();
+        }        
+        
+        _messagesCleared(){
+            this._messages = [];
+            this.errors = 0;
+            this.warnings = 0;
+            this.dispatchEventToListeners(WebInspector.ConsoleModel.Events.ConsoleCleared);
+        }        
     }
     
     /**

@@ -49,63 +49,9 @@ module WebInspector{
 		removeAllListeners(){}
 		hasEventListeners(eventType:string){}
         
-		dispatchEventToListeners(eventType:string, eventData:any):boolean{
+		dispatchEventToListeners(eventType:string, eventData?:any):boolean{
             return false;
         }
-	}
-	
-	//////////////////////////////////////////////////////////////////////
-	/*
-		view的基类
-		目录：
-		front-end/ui 
-	*/	
-	interface Constraints{
-		
-	}
-	
-	class View extends Object{
-		constructor (isWebComponent:boolean){
-            super();
-        }
-		element:HTMLElement;
-		/* 
-			如果是 isWebComponent ，这个是element的子。否则那他们是一个对象。
-		*/
-		contentElement:HTMLElement;	
-		
-		_isWebComponent:boolean;
-		_shadowRoot:any;
-		_visible:boolean;
-		_isRoot:boolean;
-		_isShowing:boolean;
-		_children:Array<View>;
-		_hideOnDetach:boolean;
-		_cssFiles:Array<any>;
-		_notificationDepth:number;
-		//如果没有设置的话，就没有，使用element
-		_defaultFocusedElement:HTMLElement;
-		
-		defaultFocusedElement():HTMLElement{return null;}
-		setDefaultFocusedElement(e:HTMLElement):void{}
-		
-		calculateConstraints():Constraints{return null;}
-
-	}
-	
-	export class  VBox extends View{
-		constructor (isWebComponent:boolean){
-            super(isWebComponent);
-            this.element.classList.add('vbox');
-        }	
-		calculateConstraints():Constraints{
-            return null;
-        }
-	}
-	
-	interface HBox extends View{
-		new (isWebComponent:boolean):VBox;	//element.classList.add('hbox')
-		calculateConstraints():Constraints;
 	}
 	
 	//////////////////////////////////////////////////////////////////////
@@ -220,6 +166,26 @@ interface Document{
 	createElementWithClass(elementName:string, className:string):HTMLElement;
 }
 
+declare var createElementWithClass:(elementName:string, className:string)=>HTMLElement;
+
+interface HtmlElement{
+    createChild(elementName:string, className:string):HtmlElement; 
+     /**
+     * @param {!DOMAgent.NodeId} nodeId
+     * @param {string} selectors
+     * @param {function(?DOMAgent.NodeId)=} callback
+     */
+    querySelector(nodeId, selectors:string, callback:any):void;
+}
+
+/*
+HtmlElement.prototype.createChild=function(elementName, className):HtmlElement; {
+        var element = this.ownerDocument.createElementWithClass(elementName, className);
+        this.appendChild(element);
+        return element;
+    }    
+*/
+
 /*
 	一些基础的全局函数。
 	file:runtime.js
@@ -236,7 +202,8 @@ declare function loadScriptsPromise(scriptNames:string);//:Promise<undefined>;
 
 class Runtime{
 	_descriptor:ModuleDescriptor;
-	
+	static cachedResources:Object;        //用来缓存所有的文件资源的。避免每次都去重新下载。
+    
     constructor(dscriptors:ModuleDescriptor,coreModuleName:Array<string>){
         
     }

@@ -58,6 +58,8 @@ WebInspector.inspectorView = new WebInspector.InspectorView();
 3. extensions
 4. Capabilities
 5. model
+6. target
+
 
 ##写一个自己的module
 1. 添加到application的配置中，
