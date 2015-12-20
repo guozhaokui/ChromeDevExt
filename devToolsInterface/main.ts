@@ -4,6 +4,7 @@ module WebInspector{
 			main
 		file:main.js
 	*/
+    export var inspectorView:InspectorView;
 	class Main{
 		showConsole():void{}
 		
@@ -15,7 +16,9 @@ module WebInspector{
 		/*
 			创建所有的uI。
 		*/
-		_createAppUI():void{}
+		_createAppUI():void{
+            WebInspector.inspectorView = new InspectorView();
+        }
 	}
-	
 }
+

@@ -90,7 +90,7 @@ module WebInspector{
 	}
 	
 	export class  VBox extends View{
-		constructor (isWebComponent:boolean){
+		constructor (isWebComponent?:boolean){
             super(isWebComponent);
             this.element.classList.add('vbox');
         }	

@@ -58,11 +58,17 @@ module WebInspector{
 	//path:
 	//file: Panel.js
 	export class Panel extends VBox{
+        _panelName:string;
         constructor(name:string){
             super(false);
+            this._panelName=name;
         }
 		wasShown():boolean{
             return false;
+        }
+        
+        get name():string{
+            return this._panelName;
         }
 	}
 	

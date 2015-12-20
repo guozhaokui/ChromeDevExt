@@ -3,7 +3,8 @@ module WebInspector{
 'use strict';
 	export class testPanel extends Panel{
 		static _instanceObject:testPanel;
-		
+		_view:testPanelView;
+        
 		constructor(){
 			super('mypanel');//这个名字必须与json中的一致
 		}
