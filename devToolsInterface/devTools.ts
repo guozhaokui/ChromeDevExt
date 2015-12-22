@@ -55,29 +55,6 @@ module WebInspector{
 	}
 	
 	//////////////////////////////////////////////////////////////////////
-	//path:
-	//file: Panel.js
-	export class Panel extends VBox{
-        _panelName:string;
-        constructor(name:string){
-            super(false);
-            this._panelName=name;
-        }
-		wasShown():boolean{
-            return false;
-        }
-        
-        get name():string{
-            return this._panelName;
-        }
-	}
-	
-	export interface PanelFactory{
-		createPanel():Panel;
-	}	
-	
-		
-	//////////////////////////////////////////////////////////////////////
 	/*
 		path:
 			components
@@ -118,28 +95,6 @@ module WebInspector{
 			constraintsInDip:boolean):SplitView;
 	}	
 		
-	//////////////////////////////////////////////////////////////////////
-	/*
-		path:
-			components
-		file: Drawer.js
-	*/
-	interface Drawer extends VBox{
-		new (splitView:any):Drawer;	
-	}
-	
-	interface TabbedPane extends VBox{
-		_tabs:any;
-		_tabsById:Object;	//实际当map来用(string,TabbedPaneTab)
-		/*
-			鼠标在当前tab上downl了。
-			这个会调用到 selectTab
-		*/
-		_tabMouseDown(event:MouseEvent);
-		
-		selectTab(id:string ,userGesture:boolean):boolean;
-	}
-	
 	//////////////////////////////////////////////////////////////////////
 	//file:TabbedPane.js
 	interface TabbedPaneTab{
@@ -192,114 +147,4 @@ HtmlElement.prototype.createChild=function(elementName, className):HtmlElement; 
     }    
 */
 
-/*
-	一些基础的全局函数。
-	file:runtime.js
-*/
 
-declare function loadResourcePromise(url:string):Promise<string>;
-
-/*
-	格式化路径，去掉.,..等
-*/
-declare function normalizePath(path:string):string;
-
-declare function loadScriptsPromise(scriptNames:string);//:Promise<undefined>;
-
-class Runtime{
-	_descriptor:ModuleDescriptor;
-	static cachedResources:Object;        //用来缓存所有的文件资源的。避免每次都去重新下载。
-    
-    constructor(dscriptors:ModuleDescriptor,coreModuleName:Array<string>){
-        
-    }
-	/*
-		某个脚本加载完了，立刻执行他。
-	*/
-	scriptSourceLoaded(scriptNumber:number, scriptSource:string):void{
-        
-    }
-	
-	/*
-		加载descriptors中指定的所有的脚本
-	*/
-	_loadScripts(){}
-	
-	/*
-		实际执行的时候，是module来执行
-	*/
-	_loadStylesheets():Promise<void>{
-        return null;
-    }
-
-	/*
-		调用全局的 normalizePath
-	*/
-	_modularizeURL(resourceName:string){
-        
-    }
-	/*
-		加载type=autostart的module，这些module是核心模块
-	*/
-	_loadAutoStartModules(moduleNames:Array<string>):Promise<Array<any>>{
-        return null;
-    }		
-    
-    static 	startApplication:(appName:string)=>void;
-
-}
-
-interface ModuleDescriptor{
-	name:string;
-	extensions:Array<ExtensionDesciptor>;
-	dependencies?:Array<string>;
-	scripts:Array<string>;
-}
-
-interface ExtensionDesciptor{
-	type:string;
-	className?:string;
-	contextType?:Array<string>;
-}
-
-interface Module{
-	/*
-		创建实例。
-		会创建所有的extension，并且push到runtime对象中
-	*/
-	new(manager:Runtime, descriptor:ModuleDescriptor):Module;
-	
-	_manager:Runtime;
-	_descriptor:ModuleDescriptor;
-	_name:string;
-	_instanceMap:Object;
-	/*
-		是否已经把module所需的所有的资源加载完毕
-		包括脚本，style，html
-	*/
-	_loaded:boolean;	
-	
-	_loadStylesheets():Promise<void>;
-	
-	_loadScripts():Promise<void>;
-	
-	_modularizeURL(resourceName:string):string;
-	
-	/*
-		创建一个指定class的对象。缓存到 _instanceMap 中。
-	*/
-	_instance(className:string):Object;
-	
-}
-
-/*
-	Module和 Extension的区别：
-		Extension只能扩展module?
-*/
-interface Extension{
-	_module:Module;
-	_descriptor:ModuleDescriptor;
-	_type:string;
-	_hasTypeClass:boolean;
-	_className:string;
-}

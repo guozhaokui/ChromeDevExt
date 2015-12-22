@@ -65,4 +65,5 @@ WebInspector.inspectorView = new WebInspector.InspectorView();
 1. 添加到application的配置中，
 2. 创建一个对应的目录，添加 module.json
 1. 需要一个panel，提供一个 PanelFactory 实例用来创建这个panel。
+    wrapperView是框架创建的，然后显示view就是自己的事情了
     这个panel下面有一个view提供界面内容，这个view由WrapperView包着

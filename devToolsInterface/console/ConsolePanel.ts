@@ -41,7 +41,7 @@ module WebInspector{
         _view:ConsoleView;
         constructor(){
             super(false);
-             this.element.classList.add("console-view-wrapper");
+            this.element.classList.add("console-view-wrapper");
             ConsolePanel_WrapperView._instance = this;
 
             this._view = WebInspector.ConsolePanel._view();

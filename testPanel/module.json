@@ -12,7 +12,7 @@
             "name": "mypanel",
             "title": "Console2",
             "order": "0",
-            "className": "WebInspector.testPanel.WrapperView"
+            "className": "WebInspector.testPanel.testPanel_WrapperView"
         },
         {
             "type": "@WebInspector.Revealer",
@@ -62,7 +62,8 @@
         "components"
     ],
     "scripts": [
-        "testPanel.js"
+        "testPanel.js",
+        "testPanelView.js"
     ],
     "stylesheets": [
         "consoleView.css"
