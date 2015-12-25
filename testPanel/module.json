@@ -10,9 +10,9 @@
         {
             "type": "drawer-view",
             "name": "mypanel",
-            "title": "Console2",
+            "title": "mypanel",
             "order": "0",
-            "className": "WebInspector.testPanel.testPanel_WrapperView"
+            "className": "WebInspector.ConsolePanel.WrapperView"
         },
         {
             "type": "@WebInspector.Revealer",

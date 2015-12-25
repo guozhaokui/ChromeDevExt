@@ -13,50 +13,6 @@ declare function loadResourcePromise(url:string):Promise<string>;
 declare function normalizePath(path:string):string;
 
 declare function loadScriptsPromise(scriptNames:string);//:Promise<undefined>;
-export class Runtime{
-	_descriptor:ModuleDescriptor;
-	static cachedResources:Object;        //用来缓存所有的文件资源的。避免每次都去重新下载。
-    
-    constructor(dscriptors:ModuleDescriptor,coreModuleName:Array<string>){
-        
-    }
-	/*
-		某个脚本加载完了，立刻执行他。
-	*/
-	scriptSourceLoaded(scriptNumber:number, scriptSource:string):void{
-        
-    }
-	
-	/*
-		加载descriptors中指定的所有的脚本
-	*/
-	_loadScripts(){}
-	
-	/*
-		实际执行的时候，是module来执行
-	*/
-	_loadStylesheets():Promise<void>{
-        return null;
-    }
-
-	/*
-		调用全局的 normalizePath
-	*/
-	_modularizeURL(resourceName:string){
-        
-    }
-	/*
-		加载type=autostart的module，这些module是核心模块
-	*/
-	_loadAutoStartModules(moduleNames:Array<string>):Promise<Array<any>>{
-        return null;
-    }		
-    
-    static 	startApplication:(appName:string)=>void;
-
-    static Extension = Runtime_Extension;
-    static Module = Runtime_Module;
-}
 
 interface ModuleDescriptor{
 	name:string;
@@ -71,6 +27,8 @@ interface ExtensionDesciptor{
 	contextType?:Array<string>;
 }
     
+
+
 class Runtime_Module{
 	/*
 		创建实例。
@@ -124,4 +82,48 @@ class Runtime_Extension{
     constuctor(module:Runtime_Module, descriptor){
         
     }
+}
+
+class Runtime{
+	_descriptor:ModuleDescriptor;
+	static cachedResources:Object;        //用来缓存所有的文件资源的。避免每次都去重新下载。
+    
+    constructor(dscriptors:ModuleDescriptor,coreModuleName:Array<string>){
+    }
+	/*
+		某个脚本加载完了，立刻执行他。
+	*/
+	scriptSourceLoaded(scriptNumber:number, scriptSource:string):void{
+        
+    }
+	
+	/*
+		加载descriptors中指定的所有的脚本
+	*/
+	_loadScripts(){}
+	
+	/*
+		实际执行的时候，是module来执行
+	*/
+	_loadStylesheets():Promise<void>{
+        return null;
+    }
+
+	/*
+		调用全局的 normalizePath
+	*/
+	_modularizeURL(resourceName:string){
+        
+    }
+	/*
+		加载type=autostart的module，这些module是核心模块
+	*/
+	_loadAutoStartModules(moduleNames:Array<string>):Promise<Array<any>>{
+        return null;
+    }		
+    
+    static 	startApplication:(appName:string)=>void;
+
+    static Extension = Runtime_Extension;
+    static Module = Runtime_Module;
 }

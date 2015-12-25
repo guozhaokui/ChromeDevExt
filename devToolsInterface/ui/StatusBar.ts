@@ -1,22 +1,44 @@
 
 ///<reference path="../devTools.ts" />
-/**
- * status相关的控件
- * 
- */
 
 //
-interface Element{
-    createChild(elementName:string, className?:string):Element; 
+interface HTMLElement{
+    createChild(elementName:string, className?:string):HTMLElement; 
 }
+
+var a:HTMLElement;
+a.createChild('a','b');
 
 module WebInspector{
     export class StatusBar{
+        _items=new Array<StatusBarItem>();
+        element:HTMLElement;
+        _shadowRoot:HTMLElement;
+        _contentElement:HTMLElement;
         /**
          * @param parentElement 父对象
          */
         constructor(parentElement:HTMLElement){
-            
+            this.element.createChild('','');
+            this.element = parentElement ? 
+                    parentElement.createChild("div", "status-bar") : 
+                    createElementWithClass("div", "status-bar");
+            this._shadowRoot = null;//this.element.createChild .createShadowRoot();
+            //this._shadowRoot.appendChild(WebInspector.View.createStyleElement("ui/statusBar.css"));
+            this._contentElement = this._shadowRoot.createChild("div", "status-bar-shadow");;
+        }
+        
+        makeNarrow(){
+            //this._contentElement.classList.add("narrow");
+        }
+
+        makeVertical(){
+            //this._contentElement.classList.add("vertical");
+        }        
+        
+       appendStatusBarItem(item:StatusBarItem){
+        this._items.push(item);
+        //this._contentElement.insertBefore(item.element, this._contentElement.lastChild);
         }
     }
     

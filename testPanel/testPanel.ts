@@ -18,7 +18,7 @@ module WebInspector{
         //把自己的view显示出来
         _showViewInWrapper(){
             this._view.show(this.element);
-        }                      
+        }
 	}
 
 	export class testPanel extends Panel{

@@ -137,6 +137,8 @@ interface HtmlElement{
      * @param {function(?DOMAgent.NodeId)=} callback
      */
     querySelector(nodeId, selectors:string, callback:any):void;
+    
+    appendChildren(var_args):void;
 }
 
 /*

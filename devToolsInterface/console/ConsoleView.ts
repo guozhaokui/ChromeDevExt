@@ -43,8 +43,8 @@ module WebInspector{
 //             WebInspector.SettingsUI.bindCheckbox(this._preserveLogCheckbox.inputElement, WebInspector.settings.preserveConsoleLog);
 //             this._preserveLogCheckbox.element.title = WebInspector.UIString("Do not clear log on page reload / navigation.");
 // 
-//             var statusBar = new WebInspector.StatusBar(this._contentsElement);
-//             statusBar.appendStatusBarItem(this._clearConsoleButton);
+             var statusBar = new WebInspector.StatusBar(this._contentsElement);
+             statusBar.appendStatusBarItem(this._clearConsoleButton);
 //             statusBar.appendStatusBarItem(this._filterBar.filterButton());
 //             statusBar.appendStatusBarItem(this._executionContextSelector);
 //             statusBar.appendStatusBarItem(this._preserveLogCheckbox);
@@ -121,7 +121,7 @@ module WebInspector{
 //             WebInspector.targetManager.addModelListener(WebInspector.RuntimeModel, WebInspector.RuntimeModel.Events.ExecutionContextDestroyed, this._onExecutionContextDestroyed, this);
 //             WebInspector.targetManager.addEventListener(WebInspector.TargetManager.Events.MainFrameNavigated, this._onMainFrameNavigated, this);
 // 
-//             this._initConsoleMessages();
+             this._initConsoleMessages();
 // 
 //             WebInspector.context.addFlavorChangeListener(WebInspector.ExecutionContext, this._executionContextChangedExternally, this);
 //              
@@ -131,6 +131,13 @@ module WebInspector{
             
         }
         performSearch(searchConfig, shouldJump:boolean, jumpBackwards:boolean):void{
+            
+        }
+        
+        /**
+         * 对console事件的处理
+         */
+        _initConsoleMessages(){
             
         }
         

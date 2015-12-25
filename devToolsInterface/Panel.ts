@@ -1,7 +1,7 @@
 
 ///<reference path="./Runtime.ts" />
 module WebInspector{
-	export class Panel extends VBox{
+	export class Panel extends WebInspector.VBox{
         _panelName:string;
         constructor(name:string){
             super(false);
@@ -27,8 +27,8 @@ module WebInspector{
     export class RuntimeExtensionPanelDescriptor{
         _name:string;
         _title:string;
-        _extension:Runtime.Extension;
-        constructor(extension:Runtime.Extension){
+        _extension:Runtime_Extension;// Runtime.Extension;
+        constructor(extension:Runtime_Extension){
             
         }
     }    

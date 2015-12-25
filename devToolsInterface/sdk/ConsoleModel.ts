@@ -136,4 +136,32 @@ module WebInspector{
         }
         
     }
+    
+    export class MultitargetConsoleModel extends WebInspector.Object{
+        _mainTarget:Target;
+        
+        constructor(){
+            super();
+        }
+        
+        targetAdded(target:Target){
+            if(!this._mainTarget){
+                this._mainTarget = target;
+                //为什么只是注册 clear
+                target.consoleModel.addEventListener( WebInspector.ConsoleModel.Events.ConsoleCleared,this._consoleCleared,this );
+            }
+        }
+        
+        targetRemoved(target) {
+            if (this._mainTarget === target) {
+                delete this._mainTarget;
+                target.consoleModel.removeEventListener(WebInspector.ConsoleModel.Events.ConsoleCleared, this._consoleCleared, this);
+            }
+        }        
+        
+        _consoleCleared() {
+            this.dispatchEventToListeners(WebInspector.ConsoleModel.Events.ConsoleCleared);
+        }
+            
+    }
 }
