@@ -147,5 +147,13 @@ module WebInspector{
                 targets[i].consoleModel.requestClearMessages();
         }        
         
+        supportsCaseSensitiveSearch():boolean{
+            return false;
+        }
+        supportsRegexSearch():boolean{
+            return false;
+        }
+        jumpToNextSearchResult():void{}
+        jumpToPreviousSearchResult():void{}        
     }   
 }

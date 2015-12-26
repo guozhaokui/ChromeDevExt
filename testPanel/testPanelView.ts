@@ -37,8 +37,16 @@ module WebInspector{
             
         }
         performSearch(searchConfig, shouldJump:boolean, jumpBackwards:boolean):void{
-            
-        }        
+        }
+        
+        supportsCaseSensitiveSearch():boolean{
+            return false;
+        }
+        supportsRegexSearch():boolean{
+            return false;
+        }
+        jumpToNextSearchResult():void{}
+        jumpToPreviousSearchResult():void{}                    
     }
     
 }

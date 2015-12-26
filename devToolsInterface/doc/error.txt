@@ -16,3 +16,5 @@
 		提示找不到view的类
             因为没有在json中加入view对应的脚本，导致没有加载相应的类
 		
+3. WrapperView 总是调不到
+    WebInspector.testPanel_WrapperView

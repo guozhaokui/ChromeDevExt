@@ -29,11 +29,11 @@ module WebInspector{
         }
         
         makeNarrow(){
-            //this._contentElement.classList.add("narrow");
+            this._contentElement.classList.add("narrow");
         }
 
         makeVertical(){
-            //this._contentElement.classList.add("vertical");
+            this._contentElement.classList.add("vertical");
         }        
         
        appendStatusBarItem(item:StatusBarItem){
@@ -109,6 +109,10 @@ module WebInspector{
     }
     
     export class StatusBarButtonBase extends StatusBarItem{
+        _glyphElement:HTMLElement;
+        /**
+         * @param className css中的class
+         */
         constructor(title:string, className:string, states?:number){
             super(createElementWithClass("button", className + " status-bar-item"));
             //omitted
@@ -118,6 +122,7 @@ module WebInspector{
     export class StatusBarButton extends StatusBarButtonBase{
         constructor(title:string, className:string, states?:number){
             super(title,className,states);
+            this._glyphElement = this.element.createChild("div", "glyph");
         }
     }
 }

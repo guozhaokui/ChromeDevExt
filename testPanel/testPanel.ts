@@ -28,6 +28,7 @@ module WebInspector{
         
 		constructor(){
 			super('mypanel');//这个名字必须与json中的一致
+            testPanel._view();
 		}
 		
 		static _instance():testPanel{

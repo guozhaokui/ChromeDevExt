@@ -45,6 +45,11 @@ WebInspector.inspectorView = new WebInspector.InspectorView();
     this._drawer = new WebInspector.Drawer(this._drawerSplitView);
 ```
 
+##button
+怎么设置图片  
+statusbarButton
+
+
 ##框架
 1. 通过module的方式组织在一起，框架负责加载每个module。负责切换panel。隐藏的panel实际还在运行。每个panel的界面由panel自己负责，全部是js实现的。
 2. module与框架之间通过事件进行交互
