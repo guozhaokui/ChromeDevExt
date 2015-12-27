@@ -87,6 +87,17 @@ module WebInspector{
             if(!parentElement)
                 return;
         }
+        
+        isShowing():boolean {
+            return this._isShowing;
+        }
+        
+        focus():void{
+            var element = this.defaultFocusedElement();
+            //if (!element || element.isAncestor(this.element.ownerDocument.activeElement))
+            //    return;
+            //WebInspector.setCurrentFocusElement(element);
+        }        
 	}
 	
 	export class  VBox extends View{
@@ -107,5 +118,4 @@ module WebInspector{
             return null;
         }
 	}
-    
 }

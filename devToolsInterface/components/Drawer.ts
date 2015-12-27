@@ -1,28 +1,49 @@
 
-module WebInspector{
-   	export class Drawer extends VBox{
-		constructor(splitView:any){
+module WebInspector {
+   	export class Drawer extends VBox {
+        _tabbedPane:TabbedPane;
+        _lastSelectedViewSetting:any;
+        constructor(splitView: any) {
             super();
+            //this._lastSelectedViewSetting = WebInspector.settings.createSetting("WebInspector.Drawer.lastSelectedView", "console");
         }	
-	}
-	
-	export class TabbedPane extends VBox{
-		_tabs:any;
-		_tabsById:Object;	//实际当map来用(string,TabbedPaneTab)
-        constructor(){
-            super();
+        
+        /**
+         * @param {string} id
+         */
+        closeView(id:string) {
+            //this._tabbedPane.closeTab(id);
         }
-		/*
-			鼠标在当前tab上downl了。
-			这个会调用到 selectTab
-		*/
-		_tabMouseDown(event:MouseEvent){
-            
-        }
-		
-		selectTab(id:string ,userGesture:boolean):boolean{
-            return false;
-        }
-	}
 
+        /**
+         * @param {string} id
+         * @param {boolean=} immediate
+         */
+        showView(id:string, immediate:boolean) {
+            if (!this._tabbedPane.hasTab(id)) {
+                // Hidden tab.
+                this._innerShow(immediate);
+                return;
+            }
+            this._innerShow(immediate);
+            this._tabbedPane.selectTab(id, true);
+            // In case this id is already selected, anyways persist it as the last saved value.
+            this._lastSelectedViewSetting.set(id);
+        }
+        
+        /**
+         * @param {boolean=} immediate
+         */
+        _innerShow(immediate){
+            /*
+            if (this.isShowing())
+                return;
+
+            this._splitView.showBoth(!immediate);
+
+            if (this._visibleView())
+                this._visibleView().focus();
+             */
+        }        
+    }
 }

@@ -28,7 +28,7 @@ module WebInspector{
         
 		constructor(){
 			super('mypanel');//这个名字必须与json中的一致
-            testPanel._view();
+            this._view = testPanel._view();
 		}
 		
 		static _instance():testPanel{
@@ -40,6 +40,14 @@ module WebInspector{
                 testPanel._testPanelView = new testPanelView();
             return testPanel._testPanelView;
         }		
+        
+        /**
+         * 要显示出来。 **
+         */
+        wasShown(): void {
+            super.wasShown();
+            this._view.show(this.element);
+        }
         
 		static WrapperView=testPanel_WrapperView;
 	}

@@ -18,3 +18,14 @@
 		
 3. WrapperView 总是调不到
     WebInspector.testPanel_WrapperView
+    
+   怎么能添加上一个按钮
+       添加按鈕后，在下面的view中能显示出来，但是上面的不行。
+       两个maypanel不能同时点开，否则下面的按钮也没了
+       点下面的时候调用了wrapperview了
+       
+   _showViewInWrapper
+        就是显示在下面的，把console的这个函数去掉，下面的就不会再显示了   
+        
+  testPanel.wasShown
+    加上这个函数，就能显示出来了。 

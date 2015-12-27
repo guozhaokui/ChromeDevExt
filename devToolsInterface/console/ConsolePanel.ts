@@ -8,7 +8,7 @@ module WebInspector {
         //对应的view
         _view: ConsoleView;
         static _consoleView: ConsoleView;
-
+        static _instanceObject:ConsolePanel;
         constructor() {
             super("console");
             this._view = ConsolePanel._view();
@@ -27,13 +27,22 @@ module WebInspector {
             return null;
         }
 
-        wasShown(): boolean {
-            return false;
+        /**
+         * 要显示出来。 **
+         */
+        wasShown(): void {
+            super.wasShown();
+            this._view.show(this.element);
         }
 
         willHide() { }
 
         static show(): void { }	//WebInspector.inspectorView.setCurrentPanel(WebInspector.ConsolePanel._instance());
+        
+        static _instance(){
+            if( !ConsolePanel._instanceObject) ConsolePanel._instanceObject = new ConsolePanel;
+            return ConsolePanel._instanceObject;
+        }
     }
 
     class ConsolePanel_WrapperView extends WebInspector.VBox {
@@ -59,5 +68,17 @@ module WebInspector {
             this._view.show(this.element);
         }
 
+    }
+    
+    class ConsolePanel_ConsoleRevealer {
+        reveal(object:Object) {
+            var consoleView = WebInspector.ConsolePanel._view();
+            if (consoleView.isShowing()) {
+                consoleView.focus();
+                return Promise.resolve();
+            }
+            WebInspector.inspectorView.showViewInDrawer("console");
+            return Promise.resolve();
+        }        
     }
 }

@@ -64,7 +64,16 @@ statusbarButton
 4. Capabilities
 5. model
 6. target
+6. drawer 
+下面那部分界面显示的就是drawer-content
 
+##console的输入是怎么做的
+Console._prompt 
+class TextPrompt
+通过 onKeyDown,onInput自己做的，带自动提示功能。
+
+##canvas是在哪里创建的
+FlameChart.ts中
 
 ##写一个自己的module
 1. 添加到application的配置中，
@@ -72,3 +81,7 @@ statusbarButton
 1. 需要一个panel，提供一个 PanelFactory 实例用来创建这个panel。
     wrapperView是框架创建的，然后显示view就是自己的事情了
     这个panel下面有一个view提供界面内容，这个view由WrapperView包着
+    
+##console的显示流程
+1. tabbedPane._showTab,这时候_view已经是consoelView了,parent要可见，此时的parentView是 WebInspector.TabbedPane
+2. View.Notify(func)   调用func,就调到了ConsolePanle.wasShown. 即这个函数是必须的.

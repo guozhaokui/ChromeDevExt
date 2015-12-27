@@ -12,7 +12,7 @@
             "name": "mypanel",
             "title": "mypanel",
             "order": "0",
-            "className": "WebInspector.ConsolePanel.WrapperView"
+            "className": "WebInspector.testPanel_WrapperView"
         },
         {
             "type": "@WebInspector.Revealer",

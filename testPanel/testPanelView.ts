@@ -26,7 +26,7 @@ module WebInspector{
             this._hiddenByFilterCount = 0;
 
             this._clearConsoleButton = new WebInspector.StatusBarButton(WebInspector.UIString("Clear console log."), "clear-status-bar-item");
-            //this._clearConsoleButton.addEventListener("click", this._requestClearMessages, this);
+            this._clearConsoleButton.addEventListener("click", this._requestClearMessages, this);
             
              var statusBar = new WebInspector.StatusBar(this._contentsElement);
              statusBar.appendStatusBarItem(this._clearConsoleButton);
@@ -46,7 +46,11 @@ module WebInspector{
             return false;
         }
         jumpToNextSearchResult():void{}
-        jumpToPreviousSearchResult():void{}                    
+        jumpToPreviousSearchResult():void{}         
+        
+        _requestClearMessages(e:Event){
+            alert(e);
+        }           
     }
     
 }

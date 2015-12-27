@@ -16,8 +16,7 @@ module WebInspector{
             this.element.classList.add(name );
             this._panelName=name;
         }
-		wasShown():boolean{
-            return false;
+		wasShown():void{
         }
         
         get name():string{
