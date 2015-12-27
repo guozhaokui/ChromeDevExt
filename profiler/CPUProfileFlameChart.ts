@@ -502,15 +502,16 @@ class CPUProfileFlameChart_OverviewCalculator{
 }
 
 
-
-
+/**
+ * 画cpuprofile上半部的曲线。 
+ */
 class CPUProfileFlameChart_OverviewPane extends WebInspector.VBox{
     _overviewContainer:HTMLElement;
     _dataProvider:any;
     _overviewGrid:any;
     _overviewCanvas:HTMLCanvasElement;
     _overviewCalculator:any;
-    _updateTimerId:any;
+    _updateTimerId:number;
     
     constructor(dataProvider:WebInspector.FlameChartDataProvider){
         super();

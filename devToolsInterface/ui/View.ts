@@ -10,7 +10,7 @@ module WebInspector{
 	}
 	
 	export class View extends Object{
-		constructor (isWebComponent:boolean){
+		constructor (isWebComponent?:boolean){
             super();
         }
 		element:HTMLElement;

@@ -53,6 +53,30 @@ module WebInspector{
             this._enabled = true;
             this._visible = true;            
         }
+        
+        setEnabled(value:boolean)    {
+            if (this._enabled === value)
+                return;
+            this._enabled = value;
+            this._applyEnabledState();
+        }        
+        
+        _applyEnabledState(){
+            //this.element.disabled = !this._enabled;
+        }        
+        visible(){
+            return this._visible;
+        }
+
+        /**
+         * @param {boolean} x
+         */
+        setVisible(x) {
+            if (this._visible === x)
+                return;
+            this.element.classList.toggle("hidden", !x);
+            this._visible = x;
+        }        
     }
     
     interface StatusBarCounter__conters{

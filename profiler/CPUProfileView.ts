@@ -1,5 +1,6 @@
 module WebInspector {
 
+     
     /**
      * @constructor
      * @implements {WebInspector.Searchable}
@@ -10,56 +11,59 @@ module WebInspector {
         static _TypeFlame = "Flame";
         static _TypeTree = "Tree";
         static _TypeHeavy = "Heavy";
-
+        focusButton:StatusBarButton;
+        excludeButton:StatusBarButton;
+        resetButton:StatusBarButton;
+        dataGrid:DataGrid;
+        
         constructor(profileHeader) {
             super();
             this.element.classList.add("cpu-profile-view");
-            /*
-            this._searchableView = new WebInspector.SearchableView(this);
-            this._searchableView.show(this.element);
-
-            this._viewType = WebInspector.settings.createSetting("cpuProfilerView", WebInspector.CPUProfileView._TypeHeavy);
-
-            var columns = [];
-            columns.push({ id: "self", title: WebInspector.UIString("Self"), width: "120px", sort: WebInspector.DataGrid.Order.Descending, sortable: true });
-            columns.push({ id: "total", title: WebInspector.UIString("Total"), width: "120px", sortable: true });
-            columns.push({ id: "function", title: WebInspector.UIString("Function"), disclosure: true, sortable: true });
-
-            this.dataGrid = new WebInspector.DataGrid(columns);
-            this.dataGrid.addEventListener(WebInspector.DataGrid.Events.SortingChanged, this._sortProfile, this);
-
-            this.viewSelectComboBox = new WebInspector.StatusBarComboBox(this._changeView.bind(this));
-
-            var options = {};
-            options[WebInspector.CPUProfileView._TypeFlame] = this.viewSelectComboBox.createOption(WebInspector.UIString("Chart"), "", WebInspector.CPUProfileView._TypeFlame);
-            options[WebInspector.CPUProfileView._TypeHeavy] = this.viewSelectComboBox.createOption(WebInspector.UIString("Heavy (Bottom Up)"), "", WebInspector.CPUProfileView._TypeHeavy);
-            options[WebInspector.CPUProfileView._TypeTree] = this.viewSelectComboBox.createOption(WebInspector.UIString("Tree (Top Down)"), "", WebInspector.CPUProfileView._TypeTree);
-
-            var optionName = this._viewType.get() || WebInspector.CPUProfileView._TypeFlame;
-            var option = options[optionName] || options[WebInspector.CPUProfileView._TypeFlame];
-            this.viewSelectComboBox.select(option);
-
-            this.focusButton = new WebInspector.StatusBarButton(WebInspector.UIString("Focus selected function."), "focus-status-bar-item");
-            this.focusButton.setEnabled(false);
-            this.focusButton.addEventListener("click", this._focusClicked, this);
-
-            this.excludeButton = new WebInspector.StatusBarButton(WebInspector.UIString("Exclude selected function."), "delete-status-bar-item");
-            this.excludeButton.setEnabled(false);
-            this.excludeButton.addEventListener("click", this._excludeClicked, this);
-
-            this.resetButton = new WebInspector.StatusBarButton(WebInspector.UIString("Restore all functions."), "refresh-status-bar-item");
-            this.resetButton.setVisible(false);
-            this.resetButton.addEventListener("click", this._resetClicked, this);
-
-            this._profileHeader = profileHeader;
-            this._linkifier = new WebInspector.Linkifier(new WebInspector.Linkifier.DefaultFormatter(30));
-
-            this.profile = new WebInspector.CPUProfileDataModel(profileHeader._profile || profileHeader.protocolProfile());
-
-            this._changeView();
-            if (this._flameChart)
-                this._flameChart.update();
-            */
+//             this._searchableView = new WebInspector.SearchableView(this);
+//             this._searchableView.show(this.element);
+// 
+//             this._viewType = WebInspector.settings.createSetting("cpuProfilerView", WebInspector.CPUProfileView._TypeHeavy);
+// 
+            //Heavy中的三列
+             var columns = [];
+             columns.push({ id: "self", title: WebInspector.UIString("Self"), width: "120px", sort: WebInspector.DataGrid.Order.Descending, sortable: true });
+             columns.push({ id: "total", title: WebInspector.UIString("Total"), width: "120px", sortable: true });
+             columns.push({ id: "function", title: WebInspector.UIString("Function"), disclosure: true, sortable: true });
+ 
+             this.dataGrid = new DataGrid(columns);
+//             this.dataGrid.addEventListener(WebInspector.DataGrid.Events.SortingChanged, this._sortProfile, this);
+// 
+//             this.viewSelectComboBox = new WebInspector.StatusBarComboBox(this._changeView.bind(this));
+// 
+             var options = {};
+//             options[WebInspector.CPUProfileView._TypeFlame] = this.viewSelectComboBox.createOption(WebInspector.UIString("Chart"), "", WebInspector.CPUProfileView._TypeFlame);
+//             options[WebInspector.CPUProfileView._TypeHeavy] = this.viewSelectComboBox.createOption(WebInspector.UIString("Heavy (Bottom Up)"), "", WebInspector.CPUProfileView._TypeHeavy);
+//             options[WebInspector.CPUProfileView._TypeTree] = this.viewSelectComboBox.createOption(WebInspector.UIString("Tree (Top Down)"), "", WebInspector.CPUProfileView._TypeTree);
+// 
+//             var optionName = this._viewType.get() || WebInspector.CPUProfileView._TypeFlame;
+//             var option = options[optionName] || options[WebInspector.CPUProfileView._TypeFlame];
+//             this.viewSelectComboBox.select(option);
+// 
+             this.focusButton = new WebInspector.StatusBarButton(WebInspector.UIString("Focus selected function."), "focus-status-bar-item");
+             this.focusButton.setEnabled(false);
+             this.focusButton.addEventListener("click", this._focusClicked, this);
+ 
+             this.excludeButton = new WebInspector.StatusBarButton(WebInspector.UIString("Exclude selected function."), "delete-status-bar-item");
+             this.excludeButton.setEnabled(false);
+             this.excludeButton.addEventListener("click", this._excludeClicked, this);
+ 
+             this.resetButton = new WebInspector.StatusBarButton(WebInspector.UIString("Restore all functions."), "refresh-status-bar-item");
+             this.resetButton.setVisible(false);
+             this.resetButton.addEventListener("click", this._resetClicked, this);
+// 
+//             this._profileHeader = profileHeader;
+//             this._linkifier = new WebInspector.Linkifier(new WebInspector.Linkifier.DefaultFormatter(30));
+// 
+//             this.profile = new WebInspector.CPUProfileDataModel(profileHeader._profile || profileHeader.protocolProfile());
+// 
+//             this._changeView();
+//             if (this._flameChart)
+//                 this._flameChart.update();
         }
 
 

@@ -57,6 +57,13 @@ statusbarButton
 4. NI服务器可能需要管理数据。
 . model负责dispatch事件么
 
+##可重用控件
+都在ui目录下。
+1. button
+2. list
+3. input
+
+
 ##概念
 1. panel
 2. sidebar panes

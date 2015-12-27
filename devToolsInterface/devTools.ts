@@ -129,7 +129,7 @@ interface Document{
 
 declare var createElementWithClass:(elementName:string, className:string)=>HTMLElement;
 
-interface HtmlElement{
+interface  HtmlElement{
     createChild(elementName:string, className:string):HtmlElement; 
      /**
      * @param {!DOMAgent.NodeId} nodeId
@@ -139,6 +139,8 @@ interface HtmlElement{
     querySelector(nodeId, selectors:string, callback:any):void;
     
     appendChildren(var_args):void;
+    
+    disabled:boolean;
 }
 
 /*
