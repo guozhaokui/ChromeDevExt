@@ -8,7 +8,7 @@ module WebInspector {
         return null;
     }
 
-    class CPUFlameChartDataProvider implements FlameChartDataProvider {
+    export class CPUFlameChartDataProvider implements FlameChartDataProvider {
         _cpuProfile: any;
         _target: WebInspector.Target;
         _colorGenerator: any;
@@ -52,7 +52,7 @@ module WebInspector {
          * @param {number} endTime
          * @return {?Array.<number>}
          */
-        dividerOffsets(startTime, endTime) {
+        dividerOffsets(startTime:number, endTime:number) {
             return null;
         }
 
@@ -88,7 +88,7 @@ module WebInspector {
          * @param {number} index
          * @return {string}
          */
-        markerColor(index) {
+        markerColor(index):string {
             throw new Error("Unreachable.");
         }
 
@@ -96,7 +96,7 @@ module WebInspector {
          * @param {number} index
          * @return {string}
          */
-        markerTitle(index) {
+        markerTitle(index):string {
             throw new Error("Unreachable.");
         }
 
@@ -104,7 +104,7 @@ module WebInspector {
          * @param {number} index
          * @return {boolean}
          */
-        isTallMarker(index) {
+        isTallMarker(index):boolean {
             throw new Error("Unreachable.");
         }
 
@@ -316,12 +316,16 @@ module WebInspector {
 
 /**
  *  cpuprofile界面中的上面的曲线部分。 
+ *  层次结构
+ *      view.element
+ *          _overviewPane:曲线图
+ *          _mainPane : FlameChart
  */
 class CPUProfileFlameChart extends WebInspector.VBox{
     _dataProvider:WebInspector.FlameChartDataProvider
     _searchResults:Array<any>;
-    _overviewPane:any;
-    _mainPane:any;
+    _overviewPane:CPUProfileFlameChart_OverviewPane=null;
+    _mainPane:WebInspector.FlameChart;
     _searchResultIndex:any;
     /**
      * @constructor
@@ -332,13 +336,13 @@ class CPUProfileFlameChart extends WebInspector.VBox{
     constructor(dataProvider:WebInspector.FlameChartDataProvider){
         super();
         this.element.id='cpu-flame-chart';
-//         this._overviewPane = new WebInspector.CPUProfileFlameChart.OverviewPane(dataProvider);
-//         this._overviewPane.show(this.element);
-// 
-//         this._mainPane = new WebInspector.FlameChart(dataProvider, this._overviewPane, true);
-//         this._mainPane.show(this.element);
-//         this._mainPane.addEventListener(WebInspector.FlameChart.Events.EntrySelected, this._onEntrySelected, this);
-//         this._overviewPane.addEventListener(WebInspector.OverviewGrid.Events.WindowChanged, this._onWindowChanged, this);
+        this._overviewPane = new CPUProfileFlameChart_OverviewPane(dataProvider);
+        this._overviewPane.show(this.element);
+ 
+        this._mainPane = new WebInspector.FlameChart(dataProvider, this._overviewPane, true);
+        this._mainPane.show(this.element);
+        this._mainPane.addEventListener(WebInspector.FlameChart.Events.EntrySelected, this._onEntrySelected, this);
+        this._overviewPane.addEventListener(WebInspector.OverviewGrid.Events.WindowChanged, this._onWindowChanged, this);
         this._dataProvider = dataProvider;
         this._searchResults = [];
     }
@@ -354,7 +358,7 @@ class CPUProfileFlameChart extends WebInspector.VBox{
     _onWindowChanged(event) {
         var windowLeft = event.data.windowTimeLeft;
         var windowRight = event.data.windowTimeRight;
-        this._mainPane.setWindowTimes(windowLeft, windowRight);
+        //this._mainPane.setWindowTimes(windowLeft, windowRight);
     }
 
     /**
@@ -406,19 +410,19 @@ class CPUProfileFlameChart extends WebInspector.VBox{
     }
 
     searchCanceled() {
-        this._mainPane.setSelectedEntry(-1);
+        //this._mainPane.setSelectedEntry(-1);
         this._searchResults = [];
         this._searchResultIndex = -1;
     }
 
     jumpToNextSearchResult() {
         this._searchResultIndex = (this._searchResultIndex + 1) % this._searchResults.length;
-        this._mainPane.setSelectedEntry(this._searchResults[this._searchResultIndex]);
+        //this._mainPane.setSelectedEntry(this._searchResults[this._searchResultIndex]);
     }
 
     jumpToPreviousSearchResult() {
         this._searchResultIndex = (this._searchResultIndex - 1 + this._searchResults.length) % this._searchResults.length;
-        this._mainPane.setSelectedEntry(this._searchResults[this._searchResultIndex]);
+        //this._mainPane.setSelectedEntry(this._searchResults[this._searchResultIndex]);
     }
 
     /**
@@ -503,11 +507,15 @@ class CPUProfileFlameChart_OverviewCalculator{
 
 
 /**
- * 画cpuprofile上半部的曲线。 
+ * 画cpuprofile上半部的曲线。
+ * 层次结构
+ *   _overviewContainer：Div
+ *      _overviewCanvas:Canvas pos:0,20
+ *      _overviewGrid:
  */
 class CPUProfileFlameChart_OverviewPane extends WebInspector.VBox{
     _overviewContainer:HTMLElement;
-    _dataProvider:any;
+    _dataProvider:WebInspector.FlameChartDataProvider;
     _overviewGrid:any;
     _overviewCanvas:HTMLCanvasElement;
     _overviewCalculator:any;
@@ -517,13 +525,13 @@ class CPUProfileFlameChart_OverviewPane extends WebInspector.VBox{
         super();
         this.element.classList.add("cpu-profile-flame-chart-overview-pane");
         this._overviewContainer = this.element.createChild("div", "cpu-profile-flame-chart-overview-container");
-        //this._overviewGrid = new WebInspector.OverviewGrid("cpu-profile-flame-chart");
+        this._overviewGrid = new WebInspector.OverviewGrid("cpu-profile-flame-chart");
         this._overviewGrid.element.classList.add("fill");
         this._overviewCanvas = <HTMLCanvasElement>this._overviewContainer.createChild("canvas", "cpu-profile-flame-chart-overview-canvas");
         this._overviewContainer.appendChild(this._overviewGrid.element);
         //this._overviewCalculator = new WebInspector.CPUProfileFlameChart.OverviewCalculator();
         this._dataProvider = dataProvider;
-        //this._overviewGrid.addEventListener(WebInspector.OverviewGrid.Events.WindowChanged, this._onWindowChanged, this);
+        this._overviewGrid.addEventListener(WebInspector.OverviewGrid.Events.WindowChanged, this._onWindowChanged, this);
     }
     /**
      * @param {number} windowStartTime
@@ -585,7 +593,8 @@ class CPUProfileFlameChart_OverviewPane extends WebInspector.VBox{
         var timelineData = this._timelineData();
         if (!timelineData)
             return;
-        //this._resetCanvas(this._overviewContainer.clientWidth, this._overviewContainer.clientHeight - WebInspector.FlameChart.DividersBarHeight);
+        //canvas上面要保留20像素的空间，控制范围
+        this._resetCanvas(this._overviewContainer.clientWidth, this._overviewContainer.clientHeight - WebInspector.FlameChart.DividersBarHeight);
         this._overviewCalculator._updateBoundaries(this);
         this._overviewGrid.updateDividers(this._overviewCalculator);
         this._drawOverviewCanvas();
@@ -622,7 +631,7 @@ class CPUProfileFlameChart_OverviewPane extends WebInspector.VBox{
      * @param {number} width
      * @return {!Uint8Array}
      */
-    _calculateDrawData(width) {
+    _calculateDrawData(width:number):Uint8Array {
         var dataProvider = this._dataProvider;
         var timelineData = this._timelineData();
         var entryStartTimes = timelineData.entryStartTimes;

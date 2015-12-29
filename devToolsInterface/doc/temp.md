@@ -63,6 +63,12 @@ statusbarButton
 2. list
 3. input
 
+##uiutil对动画的控制
+
+##flameChart是两个canvas么
+只是一个，cpuprofile的flamechart是两个，用FlameChart控件显示下面的内容，上面的曲线是另外一个
+
+##flamechart的数据在哪管理
 
 ##概念
 1. panel
@@ -80,7 +86,34 @@ class TextPrompt
 通过 onKeyDown,onInput自己做的，带自动提示功能。
 
 ##canvas是在哪里创建的
-FlameChart.ts中
+FlameChart.ts中（下半部分）和CPuprofileFlameChart中（上半部分）
+###位置
+profilesPanel.css
+```css
+.cpu-profile-flame-chart-overview-container {
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 80px;
+}
+
+#cpu-profile-flame-chart-overview-container {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.cpu-profile-flame-chart-overview-canvas {
+    position: absolute;
+    top: 20px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+```
+
+##datprovider
+从哪里得到的原始数据
+SDKModel
 
 ##写一个自己的module
 1. 添加到application的配置中，

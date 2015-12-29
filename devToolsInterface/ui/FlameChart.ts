@@ -141,10 +141,26 @@ module WebInspector {
         paddingLeft();
     }
 
-    class FlameChart extends WebInspector.VBox {
+    /**
+     * 例如cpuprofile的下半部分。
+     */
+    export class FlameChart extends WebInspector.VBox {
+        static Events = {
+           EntrySelected: "EntrySelected"
+        }
         _flameChartDelegate:FlameChartDelegate;
         _isTopDown=false;
-        _canvas:HTMLCanvasElement;
+        _canvas:HTMLCanvasElement;      //画布
+        _timeWindowLeft:number;
+        _timeWindowRight:number;
+        _muteAnimation:boolean;
+        _cancelWindowTimesAnimation:()=>void;
+        _pendingAnimationTimeLeft:number;
+        _pendingAnimationTimeRight:number;
+        _updateTimerId:number=0;
+        _offsetWidth:number=0;
+        _offsetHeight:number=0;
+        static DividersBarHeight=20;
         constructor(dataProvider: FlameChartDataProvider, flameChartDelegate: FlameChartDelegate, isTopDown: boolean) {
             super(true);
             this.registerRequiredCSS("ui/flameChart.css");
@@ -176,5 +192,56 @@ module WebInspector {
         _onKeyDown(event:Event){
             
         }
+        
+        update(){
+             this._updateTimerId = 0;
+            // if (!this._timelineData())
+            //     return;
+            // this._resetCanvas();
+            // this._updateBoundaries();
+            // this._calculator._updateBoundaries(this);
+            this._draw(this._offsetWidth, this._offsetHeight);
+        }
+        
+        /**
+         * 设置显示的时间段，设置后会一动画的方式修改显示结果
+         */
+        setWindowTimes(startTime:number, endTime:number){
+            if (this._muteAnimation || this._timeWindowLeft === 0 || this._timeWindowRight === Infinity || (startTime === 0 && endTime === Infinity)) {
+                // Initial setup.
+                this._timeWindowLeft = startTime;
+                this._timeWindowRight = endTime;
+                this.scheduleUpdate();
+                return;
+            }
+
+            this._cancelAnimation();
+            this._cancelWindowTimesAnimation = WebInspector.animateFunction(window, this._animateWindowTimes.bind(this),
+                [{from: this._timeWindowLeft, to: startTime}, {from: this._timeWindowRight, to: endTime}], 5,
+                this._animationCompleted.bind(this));
+            this._pendingAnimationTimeLeft = startTime;
+            this._pendingAnimationTimeRight = endTime;            
+        }
+        
+        _animateWindowTimes(startTime:number, endTime:number){
+            this._timeWindowLeft = startTime;
+            this._timeWindowRight = endTime;
+            this.update();
+        }
+
+        _animationCompleted(){
+            delete this._cancelWindowTimesAnimation;
+        }
+        
+        _cancelAnimation(){
+            
+        }
+        scheduleUpdate(){
+            
+        }   
+        
+        _draw(width:number, height:number){
+            
+        }   
     }
 }

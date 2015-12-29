@@ -43,7 +43,7 @@ module WebInspector{
 	}
 	
 	export class Object implements EventTarget{
-        addEventListener(eventType:string, listener:(e:Event)=>void, thisObject:Object){
+        addEventListener(eventType:string, listener:(e:Event)=>void, thisObject?:Object){
         }		
 		removeEventListener(eventType:string, listener:(e:Event)=>void, thisObject:any):void{}
 		removeAllListeners(){}

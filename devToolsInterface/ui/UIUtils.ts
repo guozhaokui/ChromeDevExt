@@ -27,5 +27,51 @@ module WebInspector{
         } else if (WebInspector._previousFocusElement)
             WebInspector._previousFocusElement.blur();
         */
-    }    
+    }
+    
+    /**
+     * @param {!Window} window
+     * @param {!Function} func 每次动画调用的函数,参数是一个数组
+     * @param {!Array.<{from:number, to:number}>} params
+     * @param {number} frames
+     * @param {function()=} animationComplete
+     * @return {function()} 返回一个cancel函数。
+     */
+    interface __animparam{from:number,to:number};
+    export function animateFunction(window:Window, func:(vals:Array<__animparam>)=>void, 
+            params:Array<__animparam>, frames:number, 
+            animationComplete:()=>void):()=>void{
+        var values = new Array(params.length);
+        var deltas = new Array(params.length);
+        for (var i = 0; i < params.length; ++i) {
+            values[i] = params[i].from;
+            deltas[i] = (params[i].to - params[i].from) / frames;
+        }
+
+        var raf = window.requestAnimationFrame(animationStep);
+
+        var framesLeft = frames;
+
+        function animationStep() {
+            if (--framesLeft < 0) {
+                if (animationComplete)
+                    animationComplete();
+                return;
+            }
+            for (var i = 0; i < params.length; ++i) {
+                if (params[i].to > params[i].from)
+                    values[i] = Number['constrain'](values[i] + deltas[i], params[i].from, params[i].to);
+                else
+                    values[i] = Number['constrain'](values[i] + deltas[i], params[i].to, params[i].from);
+            }
+            func.apply(null, values);
+            raf = window.requestAnimationFrame(animationStep);
+        }
+
+        function cancelAnimation(){
+            window.cancelAnimationFrame(raf);
+        }
+
+        return cancelAnimation;
+    }        
 }

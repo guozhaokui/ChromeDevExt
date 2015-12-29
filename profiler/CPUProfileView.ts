@@ -1,6 +1,12 @@
 module WebInspector {
 
      
+     /**
+      * 层次结构：
+      *     view.element
+      *         _searchableView
+      *             _visibleView: flameChart等三个中的一个
+      */
     /**
      * @constructor
      * @implements {WebInspector.Searchable}
@@ -15,12 +21,16 @@ module WebInspector {
         excludeButton:StatusBarButton;
         resetButton:StatusBarButton;
         dataGrid:DataGrid;
-        
+        _dataProvider:any;
+        _flameChart:CPUProfileFlameChart;       //曲线图
+        profile:any;
+        _profileHeader:any;
+        _visibleView:VBox;//当前显示出来的view。三种之一
+        _searchableView = new WebInspector.SearchableView(this);
         constructor(profileHeader) {
             super();
             this.element.classList.add("cpu-profile-view");
-//             this._searchableView = new WebInspector.SearchableView(this);
-//             this._searchableView.show(this.element);
+             this._searchableView.show(this.element);
 // 
 //             this._viewType = WebInspector.settings.createSetting("cpuProfilerView", WebInspector.CPUProfileView._TypeHeavy);
 // 
@@ -55,15 +65,15 @@ module WebInspector {
              this.resetButton = new WebInspector.StatusBarButton(WebInspector.UIString("Restore all functions."), "refresh-status-bar-item");
              this.resetButton.setVisible(false);
              this.resetButton.addEventListener("click", this._resetClicked, this);
-// 
-//             this._profileHeader = profileHeader;
+ 
+             this._profileHeader = profileHeader;
 //             this._linkifier = new WebInspector.Linkifier(new WebInspector.Linkifier.DefaultFormatter(30));
 // 
 //             this.profile = new WebInspector.CPUProfileDataModel(profileHeader._profile || profileHeader.protocolProfile());
 // 
 //             this._changeView();
-//             if (this._flameChart)
-//                 this._flameChart.update();
+             if (this._flameChart)
+                 this._flameChart.update();
         }
 
 
@@ -109,11 +119,9 @@ module WebInspector {
          * @param {number} timeRight
          */
         selectRange(timeLeft, timeRight) {
-            /*
             if (!this._flameChart)
                 return;
             this._flameChart.selectRange(timeLeft, timeRight);
-            */
         }
 
         /**
@@ -171,8 +179,8 @@ module WebInspector {
         /**
          * @return {!WebInspector.SearchableView}
          */
-        searchableView() {
-         //   return this._searchableView;
+        searchableView():WebInspector.SearchableView{
+            return this._searchableView;
         }
 
         /**
@@ -215,18 +223,19 @@ module WebInspector {
         }
 
         _ensureFlameChartCreated() {
-            // if (this._flameChart)
-            //     return;
-            // this._dataProvider = new WebInspector.CPUFlameChartDataProvider(this.profile, this._profileHeader.target());
-            // this._flameChart = new WebInspector.CPUProfileFlameChart(this._dataProvider);
-            // this._flameChart.addEventListener(WebInspector.FlameChart.Events.EntrySelected, this._onEntrySelected.bind(this));
+             if (this._flameChart)
+                 return;
+             this._dataProvider = new CPUFlameChartDataProvider(this.profile, this._profileHeader.target());
+             this._flameChart = new CPUProfileFlameChart(this._dataProvider);
+             this._flameChart.addEventListener(FlameChart.Events.EntrySelected, this._onEntrySelected.bind(this));
         }
 
         /**
          * @param {!WebInspector.Event} event
+         * 选中了某个函数块。要求转向对应的函数
          */
         _onEntrySelected(event) {
-            // var entryIndex = event.data;
+            var entryIndex = event.data;
             // var node = this._dataProvider._entryNodes[entryIndex];
             // var target = this._profileHeader.target();
             // if (!node || !node.scriptId || !target)
@@ -239,31 +248,31 @@ module WebInspector {
         }
 
         _changeView() {
-//             if (!this.profile)
-//                 return;
-// 
+             if (!this.profile)
+                 return;
+ 
 //             this._searchableView.closeSearch();
 // 
-//             if (this._visibleView)
-//                 this._visibleView.detach();
+             if (this._visibleView)
+                 this._visibleView.detach();
 // 
 //             this._viewType.set(this.viewSelectComboBox.selectedOption().value);
 //             switch (this._viewType.get()) {
 //                 case WebInspector.CPUProfileView._TypeFlame:
 //                     this._ensureFlameChartCreated();
-//                     this._visibleView = this._flameChart;
+                     this._visibleView = this._flameChart;
 //                     this._searchableElement = this._flameChart;
 //                     break;
 //                 case WebInspector.CPUProfileView._TypeTree:
 //                     this.profileDataGridTree = this._getTopDownProfileDataGridTree();
 //                     this._sortProfile();
-//                     this._visibleView = this.dataGrid;
+                     this._visibleView = this.dataGrid;
 //                     this._searchableElement = this.profileDataGridTree;
 //                     break;
 //                 case WebInspector.CPUProfileView._TypeHeavy:
 //                     this.profileDataGridTree = this._getBottomUpProfileDataGridTree();
 //                     this._sortProfile();
-//                     this._visibleView = this.dataGrid;
+                     this._visibleView = this.dataGrid;
 //                     this._searchableElement = this.profileDataGridTree;
 //                     break;
 //             }
@@ -273,7 +282,7 @@ module WebInspector {
 //             this.excludeButton.setVisible(!isFlame);
 //             this.resetButton.setVisible(!isFlame);
 // 
-//             this._visibleView.show(this._searchableView.element);
+             this._visibleView.show(this._searchableView.element);
         }
 
         _focusClicked(event) {
