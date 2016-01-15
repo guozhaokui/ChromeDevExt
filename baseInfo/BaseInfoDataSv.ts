@@ -1,5 +1,16 @@
 ///<reference path="e:/tsdefination/node/node.d.ts" />
 'use strict';
+
+interface v8debugProtocol{
+    seq:number;
+    type:string;//request,response
+    success:boolean;
+    running:boolean;
+    event:string;
+    body:Object;
+    command:string;
+    arguments:Object;
+}
 /**
  * 建立一个服务器，给调试器客户端提供一些信息。
  */
@@ -175,6 +186,11 @@ export class anotherAgent {
     _sv = new BaseInfoDataSv();
     _prot = new v8txtprot();
     _runtimeVersion: string;
+    static _connmsg =`{"type":"event","event":"netinfo.conn"}`;
+    static _noconnmsg = `{"type":"event","event":"netinfo.close"}`; 
+    fpsmsg(body){return `{"type":"event","event":"runtimeperf.fps","body":${JSON.stringify(body)}}`};
+    vermsg(ver){return `{"type":"event","event":"runtime.info", "rver":"${ver}"}`};
+    
     constructor() {
         this._prot._onProt = this.handleProtocol.bind(this);
         this._prot._onErr = this.handleProtError.bind(this);
@@ -183,16 +199,19 @@ export class anotherAgent {
     }
     onConnect() {
         //NI与runtime建立连接了
-        this._sv.send('');
+        this.send2C(anotherAgent._connmsg);
     }
     onClose() {
         //NI与runtime断开了
+        this.send2C(anotherAgent._noconnmsg);
     }
     onEnd() {
         //NI与runtime断开了
+        this.send2C(anotherAgent._noconnmsg);
     }
     onError(e: Error) {
         //NI与runtime断开了
+        this.send2C(anotherAgent._noconnmsg);
     }
     onData(dt: Buffer) {
         //console.log('xxxxx data:'+dt);
@@ -206,7 +225,7 @@ export class anotherAgent {
         if (this._firstHeader) {
             var layaver = head['layabox version'];
             layaver = layaver ? layaver : 'NA';
-            this.send2C(`{"type":"baseinfo","rver":"${layaver}"}`);
+            this.send2C(this.vermsg(layaver));
             this._firstHeader = false;
         }
     }
@@ -217,6 +236,13 @@ export class anotherAgent {
      * @param msg 是一个完整的协议
      */
     handleProtocol(msg: string) {
+        try {
+            var obj: v8debugProtocol = JSON.parse(msg);
+            if(obj.type==='event' && obj.event==='runtimeperf.fps'){
+                this.send2C(this.fpsmsg(obj.body));
+            }
+        } catch (e) {
 
+        }
     }
 }
